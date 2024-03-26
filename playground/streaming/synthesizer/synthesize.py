@@ -1,17 +1,11 @@
+import os
 import time
 import argparse
 from typing import Optional
 import aiohttp
 from vocode.streaming.agent.bot_sentiment_analyser import BotSentiment
 from vocode.streaming.models.message import BaseMessage
-from vocode.streaming.models.synthesizer import (
-    AzureSynthesizerConfig,
-    GoogleSynthesizerConfig,
-    PlayHtSynthesizerConfig,
-    ElevenLabsSynthesizerConfig,
-    RimeSynthesizerConfig,
-    PollySynthesizerConfig,
-)
+from vocode.streaming.models.synthesizer import *
 from vocode.streaming.output_device.base_output_device import BaseOutputDevice
 from vocode.streaming.output_device.speaker_output import SpeakerOutput
 from vocode.streaming.synthesizer import *
@@ -47,6 +41,7 @@ if __name__ == "__main__":
             message=message,
             chunk_size=chunk_size,
             bot_sentiment=bot_sentiment,
+
         )
         chunk_idx = 0
         async for chunk_result in synthesis_result.chunk_generator:
@@ -99,7 +94,8 @@ if __name__ == "__main__":
 
     # replace with the synthesizer you want to test
     # Note: --trace will not work with AzureSynthesizer
-    synthesizer = AzureSynthesizer(
-        AzureSynthesizerConfig.from_output_device(speaker_output)
+    synthesizer = ElevenLabsSynthesizer(
+        ElevenLabsSynthesizerConfig.from_output_device(
+            speaker_output, api_key=os.getenv("ELEVENLABS_API_KEY"))
     )
     asyncio.run(main())
