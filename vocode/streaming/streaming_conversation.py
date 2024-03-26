@@ -344,6 +344,7 @@ class StreamingConversation(Generic[OutputDeviceType]):
                 )
                 item.agent_response_tracker.set()
                 self.conversation.logger.debug("Message sent: {}".format(message_sent))
+                self.conversation.agent.last_sent_message = message_sent
                 if cut_off:
                     self.conversation.agent.update_last_bot_message_on_cut_off(
                         message_sent

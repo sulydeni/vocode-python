@@ -114,6 +114,7 @@ AgentConfigType = TypeVar("AgentConfigType", bound=AgentConfig)
 class AbstractAgent(Generic[AgentConfigType]):
     def __init__(self, agent_config: AgentConfigType):
         self.agent_config = agent_config
+        self.last_sent_message = None
 
     def get_agent_config(self) -> AgentConfig:
         return self.agent_config
